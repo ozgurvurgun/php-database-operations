@@ -67,6 +67,30 @@
                 $ID = 1;
                 $ID2 = 9;
                 // $query = $db->getTable("SELECT * FROM members WHERE  MemberID > ? and MemberID < ? ", [$ID, $ID2]);//BU DEĞERLERİ PARAMETRE OLARAK GONDERMEK ZORUNDA DEĞİLİM bindParam metodunu kullanabilirim
+                $user = "baris_vurgun";
+                $pass = md5(md5(md5(sha1("12345678"))));
+                $email = "barishack@gmail.com";
+                $name = "Barış";
+                $lastname = "VURGUN";
+                $birthday = "01.01.1986";
+                $confrim = 1;
+
+                $addMember = $db->insert('INSERT INTO members SET
+                MemberUsername=?,
+                MemberPassword=?,
+                MemberEmail=?,
+                MemberName=?,
+                MemberLastname=?,
+                MemberBrithday=?,
+                MemberConfrim=?
+                ', [$user, $pass, $email, $name, $lastname, $birthday, $confrim]);
+                if ($addMember) {
+                    echo'<div class="alert alert-success">'.$addMember.'. Kayıt Başarılı.</div>';
+                }
+                else{
+                    echo'<div class="alert alert-danger">Bir hata oluştu kayıt yapılamadı.</div>';
+                }
+
                 $query = $db->getRows("SELECT * FROM members");
                 foreach ($query as $items) {
                     echo "\n"; ?>
