@@ -113,7 +113,7 @@
                 products.ProductName,
                 products.ProductPrice
                 FROM members
-                INNER JOIN products ON members.MemberID=products.UserID
+                INNER JOIN products ON members.MemberID=products.MemberID
                 ");
                 foreach ($query as $items) {
                     echo "\n"; ?>
@@ -130,11 +130,6 @@
             </tbody>
         </table>
     </div>
-
-
-
-
-
     <h1 class="text-warning mb-3 mt-5">Yorumlar</h1>
     <div class="table-responsive">
         <table class="table table-hover">
@@ -160,9 +155,8 @@
                 comments.CommentID,
                 comments.CommentMessage
                 FROM members
-                INNER JOIN products ON members.MemberID=products.UserID 
-                INNER JOIN comments ON members.MemberID=comments.UserID 
-                AND products.ProductID=comments.ProductID
+                NATURAL JOIN products 
+                NATURAL JOIN comments
                 ");
                 foreach ($query as $items) {
                     echo "\n"; ?>
@@ -180,8 +174,6 @@
             </tbody>
         </table>
     </div>
-
-
 </body>
 
 </html>
