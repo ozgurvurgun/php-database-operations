@@ -68,7 +68,7 @@
                 $ID = 1;
                 $ID2 = 9;
                 // $query = $db->getTable("SELECT * FROM members WHERE  MemberID > ? and MemberID < ? ", [$ID, $ID2]);//BU DEĞERLERİ PARAMETRE OLARAK GONDERMEK ZORUNDA DEĞİLİM bindParam metodunu kullanabilirim
-                $query = $db->limit("SELECT * FROM members ORDER BY MemberID ASC LIMIT ?",6);//6 kayıt getirir
+                $query = $db->getRows("SELECT * FROM members WHERE MemberConfrim IN(0,1) ORDER BY MemberAddtime ASC");//sürekli or yazmaktansa IN() sql komutu ile sütunda o değerler var mı yok mu bakabiliriz
                 foreach ($query as $items) {
                     echo "\n"; ?>
                     <tr>
@@ -80,7 +80,7 @@
                         <td><?= $items->MemberEmail ?></td>
                         <td><?= $items->MemberBrithday ?></td>
                         <td><?= $items->MemberAddtime ?></td>
-                        <td><?= ($items->MemberConfrim == 1) ? '<span style="color:green">Aktif</span>' : '<span style="color:red">Pasif</span>'; ?></td>
+                        <td><?= ($items->MemberConfrim == 1) ? '<span style="color:green"><b>Aktif</b></span>' : '<span style="color:red"><b>Pasif</b></span>'; ?></td>
                     </tr>
                 <?php echo "\n";
                 } ?>
