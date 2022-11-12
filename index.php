@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="./assets/css/style.css">
     <title>DOCUMENT</title>
 </head>
 
@@ -46,8 +47,9 @@
     //VERİYİ HANGİ ŞEKİLDE ÇAĞIRMAK İSTİOYRSAK İKİNCİ PARAMETRE DE BELİRTEBİLİRİZ
     //OBJE OLARAK KULLANIM DAHA PRATİK GİBİ
     ?>
+    <h1 class="text-warning mb-3">Üyeler</h1>
     <div class="table-responsive">
-        <table class="table table-hover border">
+        <table class="table table-hover">
             <thead>
                 <tr>
                     <th scope="col">#</th>
@@ -67,7 +69,9 @@
                 $ID = 1;
                 $ID2 = 9;
                 // $query = $db->getTable("SELECT * FROM members WHERE  MemberID > ? and MemberID < ? ", [$ID, $ID2]);//BU DEĞERLERİ PARAMETRE OLARAK GONDERMEK ZORUNDA DEĞİLİM bindParam metodunu kullanabilirim
-                $query = $db->getRows("SELECT * FROM members WHERE MemberConfrim NOT IN(0) ORDER BY MemberAddtime ASC"); //sürekli or yazmaktansa IN() sql komutu ile sütunda o değerler var mı yok mu bakabiliriz
+                $records = $db->getColumn("SELECT COUNT(MemberID) FROM members");
+                echo '<div class="alert alert-success">Toplam kayıtlı üye sayısı: ' . $records . '</div>';
+                $query = $db->getRows("SELECT * FROM members WHERE MemberConfrim IN(0,1) ORDER BY MemberAddtime ASC");
                 foreach ($query as $items) {
                     echo "\n"; ?>
                     <tr>
@@ -79,9 +83,48 @@
                         <td><?= $items->MemberEmail ?></td>
                         <td><?= $items->MemberBrithday ?></td>
                         <td><?= $items->MemberAddtime ?></td>
-                        <td><?= ($items->MemberConfrim == 1) ? '<span style="color:green"><b>Aktif</b></span>' : '<span style="color:red"><b>Pasif</b></span>'; ?></td>
+                        <td><?= ($items->MemberConfrim == 1) ? '<span id="active"><b>Aktif</b></span>' : '<span id="passive"><b>Pasif</b></span>'; ?></td>
                     </tr>
                 <?php echo "\n";
+                } ?>
+            </tbody>
+        </table>
+    </div>
+    <h1 class="text-warning mb-3 mt-5">Ürünler</h1>
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Üye Adı</th>
+                    <th scope="col">Üye Soyadı</th>
+                    <th scope="col">Ürün Adı</th>
+                    <th scope="col">Ürün Fiyatı</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                $records = $db->getColumn("SELECT COUNT(ProductID) FROM products");
+                echo '<div class="alert alert-success">Toplam kayıtlı ürün sayısı: ' . $records . '</div>';
+                $query = $db->getRows("SELECT 
+                members.MemberName,
+                members.MemberLastname,
+                products.ProductName,
+                products.ProductPrice
+                FROM members
+                INNER JOIN products ON members.MemberID=products.UserID
+                ");
+                $i=1;
+                foreach ($query as $items) {
+                    echo "\n"; ?>
+                    <tr>
+                        <th scope="row"><?= $i ?></th>
+                        <td><?= $items->MemberName ?></td>
+                        <td><?= $items->MemberLastname ?></td>
+                        <td><?= $items->ProductName ?></td>
+                        <td><?= $items->ProductPrice ?></td>
+                    </tr>
+                <?php $i++; echo "\n";
                 } ?>
             </tbody>
         </table>
