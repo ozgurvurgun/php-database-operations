@@ -68,21 +68,20 @@
                 $ID = 1;
                 $ID2 = 9;
                 // $query = $db->getTable("SELECT * FROM members WHERE  MemberID > ? and MemberID < ? ", [$ID, $ID2]);//BU DEĞERLERİ PARAMETRE OLARAK GONDERMEK ZORUNDA DEĞİLİM bindParam metodunu kullanabilirim
-                $user = "ozgur_dev";
+                $user = "baris_vurgun_35";
                 $newuser = "ozgur_<3_ece";
                 $pass = md5(md5(md5(sha1("12345678"))));
                 $email = "216001005@stu.adu.edu.tr";
                 $name = "Barış";
                 $lastname = "VURGUN";
                 $birthday = "01.01.1986";
-                $update = $db->update('UPDATE members SET
-                MemberUsername=?,
-                MemberEmail=? WHERE MemberUsername=?
-                ', [$newuser, $email, $user]);
-                if ($update>0) {
-                    echo '<div class="alert alert-success">' . $update . ' Kayıt Güncellendi.</div>';
+                $delete = $db->delete('DELETE FROM members 
+                WHERE MemberUsername=?
+                ', [$user]);
+                if ($delete>0) {
+                    echo '<div class="alert alert-success">' . $delete . ' Kayıt Silindi.</div>';
                 } else {
-                    echo '<div class="alert alert-danger">Bir hata oluştu kayıt güncellenemedi.</div>';
+                    echo '<div class="alert alert-danger">Bir hata oluştu kayıt silinemedi.</div>';
                 }
 
                 $query = $db->getRows("SELECT * FROM members");
