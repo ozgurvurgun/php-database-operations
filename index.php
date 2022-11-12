@@ -68,7 +68,7 @@
                 $ID = 1;
                 $ID2 = 9;
                 // $query = $db->getTable("SELECT * FROM members WHERE  MemberID > ? and MemberID < ? ", [$ID, $ID2]);//BU DEĞERLERİ PARAMETRE OLARAK GONDERMEK ZORUNDA DEĞİLİM bindParam metodunu kullanabilirim
-                $query = $db->limit("SELECT * FROM members ORDER BY MemberID ASC LIMIT ?,?",3,4);//3 ten sonra 4 kayıt getirir
+                $query = $db->limit("SELECT * FROM members ORDER BY MemberID ASC LIMIT ?",6);//6 kayıt getirir
                 foreach ($query as $items) {
                     echo "\n"; ?>
                     <tr>
