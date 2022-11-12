@@ -56,6 +56,7 @@
                     <th scope="col">Ad</th>
                     <th scope="col">Soyad</th>
                     <th scope="col">Parola</th>
+                    <th scope="col">Email</th>
                     <th scope="col">Doğum Tarihi</th>
                     <th scope="col">Kayıt Tarihi</th>
                     <th scope="col">Hesap Durumu</th>
@@ -67,28 +68,21 @@
                 $ID = 1;
                 $ID2 = 9;
                 // $query = $db->getTable("SELECT * FROM members WHERE  MemberID > ? and MemberID < ? ", [$ID, $ID2]);//BU DEĞERLERİ PARAMETRE OLARAK GONDERMEK ZORUNDA DEĞİLİM bindParam metodunu kullanabilirim
-                $user = "baris_vurgun";
+                $user = "ozgur_dev";
+                $newuser = "ozgur_<3_ece";
                 $pass = md5(md5(md5(sha1("12345678"))));
-                $email = "barishack@gmail.com";
+                $email = "216001005@stu.adu.edu.tr";
                 $name = "Barış";
                 $lastname = "VURGUN";
                 $birthday = "01.01.1986";
-                $confrim = 1;
-
-                $addMember = $db->insert('INSERT INTO members SET
+                $update = $db->update('UPDATE members SET
                 MemberUsername=?,
-                MemberPassword=?,
-                MemberEmail=?,
-                MemberName=?,
-                MemberLastname=?,
-                MemberBrithday=?,
-                MemberConfrim=?
-                ', [$user, $pass, $email, $name, $lastname, $birthday, $confrim]);
-                if ($addMember) {
-                    echo'<div class="alert alert-success">'.$addMember.'. Kayıt Başarılı.</div>';
-                }
-                else{
-                    echo'<div class="alert alert-danger">Bir hata oluştu kayıt yapılamadı.</div>';
+                MemberEmail=? WHERE MemberUsername=?
+                ', [$newuser, $email, $user]);
+                if ($update>0) {
+                    echo '<div class="alert alert-success">' . $update . ' Kayıt Güncellendi.</div>';
+                } else {
+                    echo '<div class="alert alert-danger">Bir hata oluştu kayıt güncellenemedi.</div>';
                 }
 
                 $query = $db->getRows("SELECT * FROM members");
@@ -100,6 +94,7 @@
                         <td><?= $items->MemberName ?></td>
                         <td><?= $items->MemberLastname ?></td>
                         <td><?= $items->MemberPassword ?></td>
+                        <td><?= $items->MemberEmail ?></td>
                         <td><?= $items->MemberBrithday ?></td>
                         <td><?= $items->MemberAddtime ?></td>
                         <td><?= ($items->MemberConfrim == 1) ? '<span style="color:green">Aktif</span>' : '<span style="color:red">Pasif</span>'; ?></td>
