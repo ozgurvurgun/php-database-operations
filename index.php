@@ -107,28 +107,81 @@
                 $records = $db->getColumn("SELECT COUNT(ProductID) FROM products");
                 echo '<div class="alert alert-success">Toplam kayıtlı ürün sayısı: ' . $records . '</div>';
                 $query = $db->getRows("SELECT 
+                members.MemberID,
                 members.MemberName,
                 members.MemberLastname,
                 products.ProductName,
                 products.ProductPrice
                 FROM members
-                RIGHT JOIN products ON members.MemberID=products.UserID
+                INNER JOIN products ON members.MemberID=products.UserID
                 ");
-                $i=1;
                 foreach ($query as $items) {
                     echo "\n"; ?>
                     <tr>
-                        <th scope="row"><?= $i ?></th>
+                        <th scope="row"><?= $items->MemberID ?></td>
                         <td><?= $items->MemberName ?></td>
                         <td><?= $items->MemberLastname ?></td>
                         <td><?= $items->ProductName ?></td>
                         <td><?= $items->ProductPrice ?></td>
                     </tr>
-                <?php $i++; echo "\n";
+                <?php
+                    echo "\n";
                 } ?>
             </tbody>
         </table>
     </div>
+
+
+
+
+
+    <h1 class="text-warning mb-3 mt-5">Yorumlar</h1>
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Üye Adı</th>
+                    <th scope="col">Üye Soyadı</th>
+                    <th scope="col">Ürün Adı</th>
+                    <th scope="col">Ürün Fiyatı</th>
+                    <th scope="col">Yorumlar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                $records = $db->getColumn("SELECT COUNT(CommentID) FROM comments");
+                echo '<div class="alert alert-success">Toplam kayıtlı yorum sayısı: ' . $records . '</div>';
+                $query = $db->getRows("SELECT 
+                members.MemberName,
+                members.MemberLastname,
+                products.ProductName,
+                products.ProductPrice,
+                comments.CommentID,
+                comments.CommentMessage
+                FROM members
+                INNER JOIN products ON members.MemberID=products.UserID 
+                INNER JOIN comments ON members.MemberID=comments.UserID 
+                AND products.ProductID=comments.ProductID
+                ");
+                foreach ($query as $items) {
+                    echo "\n"; ?>
+                    <tr>
+                        <th scope="row"><?= $items->CommentID ?></td>
+                        <td><?= $items->MemberName ?></td>
+                        <td><?= $items->MemberLastname ?></td>
+                        <td><?= $items->ProductName ?></td>
+                        <td><?= $items->ProductPrice ?></td>
+                        <td><?= $items->CommentMessage ?></td>
+                    </tr>
+                <?php
+                    echo "\n";
+                } ?>
+            </tbody>
+        </table>
+    </div>
+
+
 </body>
 
 </html>
