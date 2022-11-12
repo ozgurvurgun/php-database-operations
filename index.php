@@ -68,23 +68,7 @@
                 $ID = 1;
                 $ID2 = 9;
                 // $query = $db->getTable("SELECT * FROM members WHERE  MemberID > ? and MemberID < ? ", [$ID, $ID2]);//BU DEĞERLERİ PARAMETRE OLARAK GONDERMEK ZORUNDA DEĞİLİM bindParam metodunu kullanabilirim
-                $user = "baris_vurgun_35";
-                $newuser = "ozgur_<3_ece";
-                $pass = md5(md5(md5(sha1("12345678"))));
-                $email = "216001005@stu.adu.edu.tr";
-                $name = "Barış";
-                $lastname = "VURGUN";
-                $birthday = "01.01.1986";
-                $delete = $db->delete('DELETE FROM members 
-                WHERE MemberUsername=?
-                ', [$user]);
-                if ($delete>0) {
-                    echo '<div class="alert alert-success">' . $delete . ' Kayıt Silindi.</div>';
-                } else {
-                    echo '<div class="alert alert-danger">Bir hata oluştu kayıt silinemedi.</div>';
-                }
-
-                $query = $db->getRows("SELECT * FROM members");
+                $query = $db->getRows("SELECT * FROM members ORDER BY MemberID ASC LIMIT 4");
                 foreach ($query as $items) {
                     echo "\n"; ?>
                     <tr>
