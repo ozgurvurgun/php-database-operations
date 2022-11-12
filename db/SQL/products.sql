@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Anamakine: 127.0.0.1
--- Üretim Zamanı: 12 Kas 2022, 23:39:13
+-- Üretim Zamanı: 13 Kas 2022, 00:24:30
 -- Sunucu sürümü: 10.4.24-MariaDB
 -- PHP Sürümü: 8.1.6
 
@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `products` (
   `ProductID` int(10) UNSIGNED NOT NULL,
-  `UserID` int(10) UNSIGNED NOT NULL,
+  `MemberID` int(10) UNSIGNED NOT NULL,
   `ProductName` varchar(255) NOT NULL,
   `ProductPrice` mediumint(8) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -38,7 +38,7 @@ CREATE TABLE `products` (
 -- Tablo döküm verisi `products`
 --
 
-INSERT INTO `products` (`ProductID`, `UserID`, `ProductName`, `ProductPrice`) VALUES
+INSERT INTO `products` (`ProductID`, `MemberID`, `ProductName`, `ProductPrice`) VALUES
 (1, 1, 'Asus Bilgisayar Monitörü', 1750),
 (2, 3, '16 Gb Ram', 420),
 (3, 2, 'Bluetooth Kulaklık', 480),

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Anamakine: 127.0.0.1
--- Üretim Zamanı: 12 Kas 2022, 23:37:23
+-- Üretim Zamanı: 13 Kas 2022, 00:24:10
 -- Sunucu sürümü: 10.4.24-MariaDB
 -- PHP Sürümü: 8.1.6
 
@@ -29,16 +29,16 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `comments` (
   `CommentID` int(10) UNSIGNED NOT NULL,
-  `UserID` int(10) UNSIGNED NOT NULL,
+  `MemberID` int(10) UNSIGNED NOT NULL,
   `ProductID` int(10) UNSIGNED NOT NULL,
-  `CommentMesaage` varchar(255) NOT NULL
+  `CommentMessage` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Tablo döküm verisi `comments`
 --
 
-INSERT INTO `comments` (`CommentID`, `UserID`, `ProductID`, `CommentMesaage`) VALUES
+INSERT INTO `comments` (`CommentID`, `MemberID`, `ProductID`, `CommentMessage`) VALUES
 (1, 1, 1, 'güzel ürün kullanışlı'),
 (2, 3, 2, 'kargo hızlıydı'),
 (3, 2, 3, 'ürün hatalı gelmiş, hiç memnun kalmadım'),
