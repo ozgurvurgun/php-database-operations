@@ -46,9 +46,8 @@
     //VERİYİ HANGİ ŞEKİLDE ÇAĞIRMAK İSTİOYRSAK İKİNCİ PARAMETRE DE BELİRTEBİLİRİZ
     //OBJE OLARAK KULLANIM DAHA PRATİK GİBİ
     ?>
-
     <div class="table-responsive">
-        <table class="table table-hover">
+        <table class="table table-hover border">
             <thead>
                 <tr>
                     <th scope="col">#</th>
@@ -68,7 +67,7 @@
                 $ID = 1;
                 $ID2 = 9;
                 // $query = $db->getTable("SELECT * FROM members WHERE  MemberID > ? and MemberID < ? ", [$ID, $ID2]);//BU DEĞERLERİ PARAMETRE OLARAK GONDERMEK ZORUNDA DEĞİLİM bindParam metodunu kullanabilirim
-                $query = $db->getRows("SELECT * FROM members WHERE MemberConfrim IN(0,1) ORDER BY MemberAddtime ASC");//sürekli or yazmaktansa IN() sql komutu ile sütunda o değerler var mı yok mu bakabiliriz
+                $query = $db->getRows("SELECT * FROM members WHERE MemberConfrim NOT IN(0) ORDER BY MemberAddtime ASC"); //sürekli or yazmaktansa IN() sql komutu ile sütunda o değerler var mı yok mu bakabiliriz
                 foreach ($query as $items) {
                     echo "\n"; ?>
                     <tr>
@@ -90,6 +89,5 @@
 </body>
 
 </html>
-
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
