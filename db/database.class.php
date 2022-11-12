@@ -97,6 +97,17 @@ class Database
         $CreateDatabase = $this->pdo->query($query . ' CHARACTER SET ' . $this->charset . ' COLLATE ' . $this->collation);
         return $CreateDatabase;
     }
+    //limit
+    public function limit($query, $par1 = 1, $par2 = NULL)
+    {
+        $this->stmt = $this->pdo->prepare($query);
+        $this->stmt->bindParam(1, $par1, \PDO::PARAM_INT);
+        if (!is_null($par2)) {
+            $this->stmt->bindParam(2, $par2, \PDO::PARAM_INT);
+        }
+        $this->stmt->execute();
+        return $this->stmt->fetchAll();
+    }
     //create table
     public function CreateTable($query)
     {
