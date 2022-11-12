@@ -112,7 +112,7 @@
                 products.ProductName,
                 products.ProductPrice
                 FROM members
-                INNER JOIN products ON members.MemberID=products.UserID
+                LEFT JOIN products ON members.MemberID=products.UserID
                 ");
                 $i=1;
                 foreach ($query as $items) {
