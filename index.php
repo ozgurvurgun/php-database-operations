@@ -155,8 +155,9 @@
                 comments.CommentID,
                 comments.CommentMessage
                 FROM members
-                NATURAL JOIN products 
-                NATURAL JOIN comments
+                INNER JOIN products ON members.MemberID=products.MemberID 
+                INNER JOIN comments ON members.MemberID=comments.MemberID 
+                AND products.ProductID=comments.ProductID
                 ");
                 foreach ($query as $items) {
                     echo "\n"; ?>
