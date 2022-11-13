@@ -21,6 +21,9 @@
     use \project\db\Database;
 
     $db = new Database;
+    $db->TableOperations("CREATE PROCEDURE MEMBERS() 
+    SELECT * FROM members
+    ");
 
     // $getQueryDb = $db->CreateDB("CREATE DATABASE IF NOT EXISTS ECEdb");
     // if ($getQueryDb) {
