@@ -1,9 +1,11 @@
-#active{
-color: green;
+#active {
+    color: green;
 }
-#passive{
-color:red;
+
+#passive {
+    color: red;
 }
-#warning{
-    color:orange; 
+
+#warning {
+    color: orange;
 }

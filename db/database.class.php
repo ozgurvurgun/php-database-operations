@@ -115,9 +115,9 @@ class Database
         return $CreateTable;
     }
     //table operations
-    public function TableOperations($query, $queryTwo)
+    public function TableOperations($query)
     {
-        $table = $this->pdo->query($query, $queryTwo);
+        $table = $this->pdo->query($query);
         return $table;
     }
     function __destruct()

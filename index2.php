@@ -21,9 +21,31 @@
     use \project\db\Database;
 
     $db = new Database;
-    $db->TableOperations("CREATE PROCEDURE MEMBERS() 
-    SELECT * FROM members
-    ");
+    $username = "tarkan_genc";
+    $pass = "12345hande";
+    $email = "tarkan85@gmail.com";
+    $name = "tarkan";
+    $surname = "geçgiller";
+    $city = "Aydın";
+    $born = "14.12.2003";
+    $confrim = "1";
+
+    // $getdata = $db->insert("INSERT INTO uyeler SET 
+    // MemberUsername=?,
+    // MemberPassword=?,
+    // MemberEmail=?,
+    // MemberName=?,
+    // MemberLastname=?,
+    // MemberCity=?,
+    // MemberBrithday=?,
+    // MemberConfrim=?
+    // ", [$username, $pass, $email, $name, $surname, $city, $born, $confrim]);
+    $getdata = 0;
+    if ($getdata) {
+        echo '<div class="alert alert-success">Üye Eklendi.</div>';
+    } else {
+        echo '<div class="alert alert-danger">Üzgünüz bir hata oluştu.</div>';
+    }
 
     // $getQueryDb = $db->CreateDB("CREATE DATABASE IF NOT EXISTS ECEdb");
     // if ($getQueryDb) {
@@ -75,9 +97,7 @@
                 // $query = $db->getTable("SELECT * FROM members WHERE  MemberID > ? and MemberID < ? ", [$ID, $ID2]);//BU DEĞERLERİ PARAMETRE OLARAK GONDERMEK ZORUNDA DEĞİLİM bindParam metodunu kullanabilirim
                 $records = $db->getColumn("SELECT COUNT(MemberID) FROM members");
                 echo '<div class="alert alert-success">Toplam kayıtlı üye sayısı: ' . $records . '</div>';
-                $query = $db->getRows("SELECT * FROM members 
-                -- WHERE MemberCity IS NULL 
-                ORDER BY MemberID ASC");
+                $query = $db->getRows("SELECT * FROM uyeler");
                 foreach ($query as $items) {
                     echo "\n"; ?>
                     <tr>
@@ -85,7 +105,7 @@
                         <td><?= $items->MemberUsername ?></td>
                         <td><?= $items->MemberName ?></td>
                         <td><?= $items->MemberLastname ?></td>
-                        <td><?= $items->MemberCity==NULL ?'<span id="warning"><b>Boş</b></span>':$items->MemberCity; ?></td>
+                        <td><?= $items->MemberCity == NULL ? '<span id="warning"><b>Boş</b></span>' : $items->MemberCity; ?></td>
                         <td><?= $items->MemberPassword ?></td>
                         <td><?= $items->MemberEmail ?></td>
                         <td><?= $items->MemberBrithday ?></td>
@@ -97,6 +117,40 @@
             </tbody>
         </table>
     </div>
+
+    <h1 class="text-warning mb-3 mt-5">Yorumlar</h1>
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Üye ID</th>
+                    <th scope="col">Ürün ID</th>
+                    <th scope="col">Yorumlar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                $records = $db->getColumn("SELECT COUNT(CommentID) FROM comments");
+                echo '<div class="alert alert-success">Toplam kayıtlı yorum sayısı: ' . $records . '</div>';
+                $query = $db->getRows("SELECT * FROM yorumlar
+                ");
+                foreach ($query as $items) {
+                    echo "\n"; ?>
+                    <tr>
+                        <th scope="row"><?= $items->CommentID ?></td>
+                        <td><?= $items->MemberID ?></td>
+                        <td><?= $items->ProductID ?></td>
+                        <td><?= $items->CommentMessage ?></td>
+                    </tr>
+                <?php
+                    echo "\n";
+                } ?>
+            </tbody>
+        </table>
+    </div>
+
+
 </body>
 
 </html>
