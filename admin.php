@@ -5,86 +5,7 @@ require_once "safe.php";
 use \project\db\Database;
 
 $db = new Database;
-$message = NULL;
-if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["Submit"])) {
-    $username = security("MemberUsername");
-    $password = security("MemberPassword");
-    $email = security("MemberEmail");
-    $name = security("MemberName");
-    $lastname = security("MemberLastname");
-    $city = security("MemberCity");
-    $birthday = security("MemberBorn");
-    $gender = security("MemberGender");
-    @$confrim = security("confrim");
-    if ($confrim != 'on') {
-        $message = '<div class="alert alert-warning">Lütfen sözleşmeyi onaylayın.</div>';
-    } else {
-        if (
-            empty($username) or empty($password) or empty($email) or
-            empty($name) or empty($lastname) or
-            empty($birthday) or empty($gender)
-        ) {
-            $message = '<div class="alert alert-warning">Lütfen boş alanları doldurun.</div>';
-        } else {
-            if ($city == 0) {
-                $message = '<div class="alert alert-warning">Lütfen şehir seçin.</div>';
-            } else {
-                if (strlen($username) < 5 or strlen($username) > 35) {
-                    $message = '<div class="alert alert-warning">Kullanıcı adı 5 karakterden kısa, 35 karakterden uzun olamaz.</div>';
-                } else {
-                    if (strlen($password) < 8 && strlen($password) < 50) {
-                        $message = '<div class="alert alert-warning">Parolanız 8 karakterden kısa, 50 karakterden uzun olamaz.</div>';
-                    } else {
-                        if (!preg_match('/^[a-zA-ZıİğĞöÖüÜşŞçÇ\s]+$/u', $name)) {
-                            $message = '<div class="alert alert-warning">Adınızı abudik gubidik girmeyiniz.</div>';
-                        } else {
-                            if (!preg_match('/^[a-zA-ZıİğĞöÖüÜşŞçÇ\s]+$/u', $lastname)) {
-                                $message = '<div class="alert alert-warning">Soy adınızı abudik gubidik girmeyiniz.</div>';
-                            } else {
-                                if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                                    $message = '<div class="alert alert-warning">E-posta formatınız doğru değil. Lütfen kontrol edin.</div>';
-                                } else {
-                                    if (!preg_match('/^(?=.*[A-ZİĞÖÜŞÇ])(?=.*[a-zığöüşç])(?=.*[0-9]).{8,20}/u', $password)) {
-                                        $message = '<div class="alert alert-warning">Parolanız belirtilen formatta değil. Lütfen güvenliğiniz için tekrar kontrol edin.</div>';
-                                    } else {
-                                        //encrypt
-                                        $data = $password;
-                                        $cipher = 'AES-128-ECB';
-                                        $key = 'sementa.9568.dhnr';
-                                        $password = openssl_encrypt($data, $cipher, $key);
-                                        // decrypt
-                                        // $data = 'encrypt edilmiş değeri buraya alırsan parolanın saf halini alırsın';
-                                        // $cipher = 'AES-128-ECB';
-                                        // $key = 'sementa.9568.dhnr';
-                                        // $decoded = openssl_decrypt($data, $cipher, $key);
 
-                                        $isUsername = $db->getColumn("SELECT MemberID FROM members WHERE MemberUsername=?", [$username]);
-                                        $isEmail = $db->getColumn("SELECT MemberID FROM members WHERE MemberEmail=?", [$email]);
-                                        if ($isUsername) {
-                                            $message = '<div class="alert alert-warning">"' . $username . '" kullanıcı adı kullanılıyor.</div>';
-                                        } elseif ($isEmail) {
-                                            $message = '<div class="alert alert-warning">"' . $email . '" email adresi kullanılıyor.</div>';
-                                        } else {
-                                            $add = $db->insert('INSERT INTO members(MemberUsername,MemberPassword,MemberEmail,
-                                            MemberName,MemberLastname,MemberCity,MemberBirthday,MemberGender) 
-                                            VALUES (?,?,?,?,?,?,?,?)                                 
-                                            ', [$username, $password, $email, $name, $lastname, $city, $birthday, $gender]);
-                                            if ($add) {
-                                                $message = '<div class="alert alert-success">Kayıt başarı ile eklendi.</div>';
-                                            } else {
-                                                $message = '<div class="alert alert-danger">Kayıt eklenirken bir hata oluştu.</div>';
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
 ?>
 
 
@@ -106,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["Submit"])) {
             <div class="col-lg-8">
                 <div class="card mt-3 bg-light">
                     <div class="card-body">
-                        <form method="POST" action="<?= htmlspecialchars($_SERVER['PHP_SELF']) ?>">
+                        <form method="POST" id="AddMemberForm">
                             <div class="form-group row">
                                 <label for="inputUsername" class="col-sm-2 col-form-label">Kullanıcı Adı</label>
                                 <div class="col-sm-10">
@@ -194,13 +115,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["Submit"])) {
                             <div class="form-group row">
                                 <div class="col-sm-2"></div>
                                 <div class="col-sm-10">
-                                    <div><?= $message ?></div>
+                                    <div id="result"></div>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-2"></div>
                                 <div class="col-sm-10">
-                                    <button type="submit" class="btn btn-success btn-lg" name="Submit">Kaydet</button>
+                                    <button type="button" class="btn btn-success btn-lg" id="SaveButton" name="SaveButton" onclick="SendForm('AddMemberForm','InsertMember','admin.php');">Kaydet <span class="loadingAnimation"></span></button>
                                 </div>
                             </div>
                         </form>
@@ -280,13 +201,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["Submit"])) {
             </div>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+    <?php require_once "footer.php" ?>
 </body>
 
 </html>
-
-
-
-
-
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
