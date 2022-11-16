@@ -60,7 +60,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["Submit"])) {
 
                                         $isUsername = $db->getColumn("SELECT MemberID FROM members WHERE MemberUsername=?", [$username]);
                                         $isEmail = $db->getColumn("SELECT MemberID FROM members WHERE MemberEmail=?", [$email]);
-                                        print_r($isUsername);
                                         if ($isUsername) {
                                             $message = '<div class="alert alert-warning">"' . $username . '" kullanıcı adı kullanılıyor.</div>';
                                         } elseif ($isEmail) {
