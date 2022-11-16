@@ -81,7 +81,7 @@
                         <td><?= $items->MemberLastname ?></td>
                         <td><?= $items->MemberPassword ?></td>
                         <td><?= $items->MemberEmail ?></td>
-                        <td><?= $items->MemberBrithday ?></td>
+                        <td><?= $items->MemberBirthday ?></td>
                         <td><?= $items->MemberAddtime ?></td>
                         <td><?= ($items->MemberConfrim == 1) ? '<span id="active"><b>Aktif</b></span>' : '<span id="passive"><b>Pasif</b></span>'; ?></td>
                     </tr>
