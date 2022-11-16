@@ -4,7 +4,7 @@ require_once "db/database.class.php";
 use \project\db\Database;
 
 $db = new Database;
-$ID = $_GET["ID"];
+$ID = intval($_GET["ID"]);
 $members = $db->getRow("SELECT * FROM members WHERE MemberID=?", [$ID]);
 ?>
 
@@ -73,7 +73,7 @@ $members = $db->getRow("SELECT * FROM members WHERE MemberID=?", [$ID]);
                             <div class="form-group row">
                                 <label for="inputBorn" class="col-sm-2 col-form-label">Doğum tarihin</label>
                                 <div class="col-sm-10">
-                                    <input type="date" class="form-control" id="inputBorn" name="MemberBorn" value="<?= $members->MemberBrithday; ?>">
+                                    <input type="date" class="form-control" id="inputBorn" name="MemberBorn" value="<?= $members->MemberBirthday; ?>">
                                 </div>
                             </div>
                             <fieldset class="form-group row">
@@ -92,7 +92,7 @@ $members = $db->getRow("SELECT * FROM members WHERE MemberID=?", [$ID]);
                                         </label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="MemberGender" id="MemberGender3" value="M" <?= ($members->MemberGender != "M" && $members->MemberGender !="F") ? "checked" : ""; ?>>
+                                        <input class="form-check-input" type="radio" name="MemberGender" id="MemberGender3" value="M" <?= ($members->MemberGender != "M" && $members->MemberGender != "F") ? "checked" : ""; ?>>
                                         <label class="form-check-label" for="MemberGender3">
                                             Belirsiz
                                         </label>
