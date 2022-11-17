@@ -101,4 +101,9 @@ switch ($operation) {
         }
         echo $message;
         break;
+    case 'total-members':
+        $records = $db->getColumn("SELECT COUNT(MemberID) FROM members");
+        $message = 'Toplam kayıtlı üye sayısı: ' . $records . ':::success';
+        echo $message;
+        break;
 }

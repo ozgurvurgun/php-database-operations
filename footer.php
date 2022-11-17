@@ -43,4 +43,16 @@
             });
         }
     }
+
+    window.onload = totalMembers("total-members");
+    function totalMembers(Operation) {
+        $.get(SITE_URL + '/ajax-process.php?page=' + Operation, {}, function(data) {
+            data = data.split(":::", 2);
+            let message = data[0];
+            let mistake = data[1];
+            if (mistake == "success") {
+                $("#total-member").html(message);
+            }
+        });
+    }
 </script>
