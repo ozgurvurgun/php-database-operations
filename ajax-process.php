@@ -91,8 +91,14 @@ switch ($operation) {
         }
         echo $message;
         break;
-
-    default:
-        # code...
+    case 'DeleteMember':
+        $ID = $_GET["ID"];
+        $delete = $db->delete("DELETE FROM members WHERE MemberID=?", [$ID]);
+        if ($delete) {
+            $message = "Kayıt silindi.:::success";
+        } else {
+            $message = "Kayıt silinemedi.:::danger";
+        }
+        echo $message;
         break;
 }

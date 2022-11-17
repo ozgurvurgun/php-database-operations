@@ -20,12 +20,27 @@
                     $("#result").html('<div class="alert alert-warning">' + message + '</div>');
                 } else if (mistake == 'danger') {
                     $("#result").html('<div class="alert alert-danger">' + message + '</div>');
-                }
-                else if (mistake == 'success') {
+                } else if (mistake == 'success') {
                     $("form").trigger("reset");
                     $("#result").html('<div class="alert alert-success">' + message + '</div>');
                 }
             }
         });
+    }
+
+    function RemoveAll(Operation, ID) {
+        if (confirm('Kaydı silmek istediğinizden emin misiniz ?')) {
+            $.get(SITE_URL + '/ajax-process.php?page=' + Operation, {
+                "ID": ID
+            }, function(data) {
+                data = data.split(":::", 2);
+                let message = data[0];
+                let mistake = data[1];
+                alert(message);
+                if (mistake == "success") {
+                    $("#" + ID).remove();
+                }
+            });
+        }
     }
 </script>
