@@ -112,9 +112,14 @@ switch ($operation) {
         }
         echo $message;
         break;
-    case 'total-members':
-        $records = $db->getColumn("SELECT COUNT(MemberID) FROM members");
-        $message = 'Toplam kayıtlı üye sayısı: ' . $records . ':::success';
-        echo $message;
+    case 'fill':
+        $ID = $_POST["TownValue"];
+        $Option = '';
+        $Option = '<option value="0">İlçenizi Seç</option>';
+        $City = $db->getRows("SELECT * FROM town WHERE CityID=?", [$ID]);
+        foreach ($City as $items) {
+            $Option .= "<option value='" . $items->TownID . "'>" . $items->TownName . "</option>\n";
+        }
+        echo $Option;
         break;
 }

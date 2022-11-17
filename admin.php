@@ -143,7 +143,7 @@ $db = new Database;
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Resim</th>
+                                <th scope="col">Profil</th>
                                 <th scope="col">Kullanıcı Adı</th>
                                 <th scope="col">Ad</th>
                                 <th scope="col">Soyad</th>
@@ -164,8 +164,8 @@ $db = new Database;
                             foreach ($query as $items) {
                                 echo "\n"; ?>
                                 <tr id="<?= $items->MemberID ?>">
-                                    <td><img width="70px" height="70px" src="uploads/<?= $items->MemberPicture ?>" alt=""></td>
                                     <th scope="row"><?= $items->MemberID ?></th>
+                                    <td><img width="70px" height="70px" src="uploads/<?= $items->MemberPicture ?>" alt=""></td>
                                     <td><?= $items->MemberUsername ?></td>
                                     <td><?= $items->MemberName ?></td>
                                     <td><?= $items->MemberLastname ?></td>

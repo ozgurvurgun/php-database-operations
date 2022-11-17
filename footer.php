@@ -2,32 +2,34 @@
 <script>
     let SITE_URL = "http://localhost/php-database-operations/";
 
-    // function SendForm(FormID, Operation, SendURL = "") {
-    //     $(".loadingAnimation").html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>');
-    //     $("#SaveButton").prop("disabled", true);
-    //     let Formdata = $("form#" + FormID).serialize();
-    //     $.ajax({
-    //         type: "post",
-    //         url: SITE_URL + '/ajax-process.php?page=' + Operation,
-    //         data: Formdata,
-            
-    //         success: function(data) {
-    //             $('.loadingAnimation').html('');
-    //             $("#SaveButton").prop("disabled", false);
-    //             data = data.split(":::", 2);
-    //             let message = data[0];
-    //             let mistake = data[1];
-    //             if (mistake == 'warning') {
-    //                 $("#result").html('<div class="alert alert-warning">' + message + '</div>');
-    //             } else if (mistake == 'danger') {
-    //                 $("#result").html('<div class="alert alert-danger">' + message + '</div>');
-    //             } else if (mistake == 'success') {
-    //                 $("form").trigger("reset");
-    //                 $("#result").html('<div class="alert alert-success">' + message + '</div>');
-    //             }
-    //         }
-    //     });
-    // }
+    function SendForm(FormID, Operation, SendURL = "") {
+        $(".loadingAnimation").html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>');
+        $("#SaveButton").prop("disabled", true);
+        //let Formdata = $("form#" + FormID).serialize();
+        let MyData= $("form#" + FormID).serializeArray();
+         MyData.push({name:"MemberID",value:"4"}); //bu şekilde form dışından da php dosyasına ajax ile veri gönderebiliriz.
+        $.ajax({
+            type: "post",
+            url: SITE_URL + '/ajax-process.php?page=' + Operation,
+            data: Formdata,
+
+            success: function(data) {
+                $('.loadingAnimation').html('');
+                $("#SaveButton").prop("disabled", false);
+                data = data.split(":::", 2);
+                let message = data[0];
+                let mistake = data[1];
+                if (mistake == 'warning') {
+                    $("#result").html('<div class="alert alert-warning">' + message + '</div>');
+                } else if (mistake == 'danger') {
+                    $("#result").html('<div class="alert alert-danger">' + message + '</div>');
+                } else if (mistake == 'success') {
+                    $("form").trigger("reset");
+                    $("#result").html('<div class="alert alert-success">' + message + '</div>');
+                }
+            }
+        });
+    }
 
     function RemoveAll(Operation, ID) {
         if (confirm('Kaydı silmek istediğinizden emin misiniz ?')) {
@@ -45,13 +47,27 @@
         }
     }
     $(function() {
+        $('#MemberCity').change(function() {
+            let TownValue = $(this).val();
+            $.ajax({
+                type: "post",
+                url: SITE_URL + '/ajax-process.php?page=fill',
+                data: {
+                    "TownValue": TownValue
+                },
+                dataType: "text",
+                success: function(data) {
+                    $("#MemberTown").html(data);
+                }
+            })
+        });
         $("#AddMemberForm").on('submit', function(e) {
             e.preventDefault();
             $(".loadingAnimation").html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>');
             $("#SaveButton").prop("disabled", true);
             $.ajax({
                 type: "post",
-                url: SITE_URL+'/ajax-process.php?page=InsertMember',
+                url: SITE_URL + '/ajax-process.php?page=InsertMember',
                 data: new FormData(this),
                 contentType: false,
                 cache: false,
