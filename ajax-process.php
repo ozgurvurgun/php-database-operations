@@ -69,14 +69,25 @@ switch ($operation) {
                                                 } elseif ($isEmail) {
                                                     $message = '"' . $email . '" email adresi kullanılıyor.:::warning';
                                                 } else {
-                                                    $add = $db->insert('INSERT INTO members(MemberUsername,MemberPassword,MemberEmail,
-                                                    MemberName,MemberLastname,MemberCity,MemberBirthday,MemberGender) 
-                                                    VALUES (?,?,?,?,?,?,?,?)                                 
-                                                    ', [$username, $password, $email, $name, $lastname, $city, $birthday, $gender]);
-                                                    if ($add) {
-                                                        $message = 'Kayıt başarı ile eklendi.:::success';
+                                                    if ($_FILES["UserImageFile"]["name"] == '') {
+                                                        $message = 'Lütfen resim seçiniz.:::warning';
                                                     } else {
-                                                        $message = 'Kayıt eklenirken bir hata oluştu.:::danger';
+                                                        $fileName = $_FILES["UserImageFile"]["name"];
+                                                        $fileTMP = $_FILES["UserImageFile"]["tmp_name"];
+                                                        $ext = pathinfo($fileName, PATHINFO_EXTENSION);
+                                                        $newName = rand() . '-' . $username . '.' . $ext;
+                                                        $Path = 'uploads/' . $newName;
+                                                        if (move_uploaded_file($fileTMP, $Path)) {
+                                                            $add = $db->insert('INSERT INTO members(MemberUsername,MemberPassword,MemberEmail,
+                                                            MemberName,MemberLastname,MemberCity,MemberBirthday,MemberGender,MemberPicture) 
+                                                             VALUES (?,?,?,?,?,?,?,?,?)                                 
+                                                            ', [$username, $password, $email, $name, $lastname, $city, $birthday, $gender, $newName]);
+                                                            if ($add) {
+                                                                $message = 'Kayıt başarı ile eklendi.:::success';
+                                                            } else {
+                                                                $message = 'Kayıt eklenirken bir hata oluştu.:::danger';
+                                                            }
+                                                        }
                                                     }
                                                 }
                                             }
