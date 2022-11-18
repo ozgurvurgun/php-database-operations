@@ -4,18 +4,16 @@
 
     function SendForm(FormID, Operation, SendURL = "") {
         $(".loadingAnimation").html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>');
-        $("#SaveButton").prop("disabled", true);
-        //let Formdata = $("form#" + FormID).serialize();
-        let MyData= $("form#" + FormID).serializeArray();
-         MyData.push({name:"MemberID",value:"4"}); //bu şekilde form dışından da php dosyasına ajax ile veri gönderebiliriz.
+        $(":button").prop("disabled", true);
+        let MyData= $("form#" + FormID).serialize();
         $.ajax({
             type: "post",
             url: SITE_URL + '/ajax-process.php?page=' + Operation,
-            data: Formdata,
+            data: MyData,
 
             success: function(data) {
                 $('.loadingAnimation').html('');
-                $("#SaveButton").prop("disabled", false);
+                $(":button").prop("disabled", false);
                 data = data.split(":::", 2);
                 let message = data[0];
                 let mistake = data[1];
@@ -30,7 +28,33 @@
             }
         });
     }
-
+    function FillForm(FormID, Operation) {
+        $(".loadingAnimation").html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>');
+        $(":button").prop("disabled", true);
+        let MyData= $("form#" + FormID).serialize();
+        $.ajax({
+            type: "post",
+            url: SITE_URL + '/ajax-process.php?page=' + Operation,
+            data: MyData,
+            success: function(data) {
+                $('.loadingAnimation').html('');
+                $(":button").prop("disabled", false);
+                data = data.split(":::", 3);
+                let result=data[0];
+                let message = data[1];
+                let mistake = data[2];
+                if (mistake == 'warning') {
+                    $("#result").html('<div class="alert alert-warning">' + message + '</div>');
+                } else if (mistake == 'danger') {
+                    $("#result").html('<div class="alert alert-danger">' + message + '</div>');
+                } else if (mistake == 'success') {
+                    $("form").trigger("reset");
+                    $("#result").html('<div class="alert alert-success">' + message + '</div>');
+                    $("#tableResult").html(result);
+                }
+            }
+        });
+    }
     function RemoveAll(Operation, ID) {
         if (confirm('Kaydı silmek istediğinizden emin misiniz ?')) {
             $.get(SITE_URL + '/ajax-process.php?page=' + Operation, {
